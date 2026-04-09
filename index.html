@@ -520,19 +520,13 @@
 
             breakEnd() {
                 this.state = 'breakEnded';
-    this.stopTimerLoop();
-    this.playNotificationSound();
-    this.showNotification();
-    this.showPopup();
-    
-    // Android fix: Force reflow and ensure popup renders
-    if (/Android/i.test(navigator.userAgent)) {
-        setTimeout(() => {
-            this.elements.popup.style.display = 'block';
-            this.elements.popup.style.visibility = 'visible';
-            this.elements.popup.offsetHeight; // Force reflow
-            this.elements.popup.classList.add('show');
-        }, 50);
+                this.stopTimerLoop();
+                this.playNotificationSound();
+                this.showNotification();
+                this.showPopup();
+                this.updateDisplay();
+                this.updateButton();
+                this.showStatus('Break finished! 🎉', false);
             }
 
             handleBreakEndDismiss() {
@@ -649,9 +643,10 @@
             }
 
             showPopup() {
-                this.elements.popup.style.display = 'flex';
                 this.elements.popup.style.visibility = 'visible';
-                this.elements.popup.offsetHeight; // Force reflow
+                this.elements.popup.style.opacity = '1';
+                this.elements.popup.style.pointerEvents = 'auto';
+                this.elements.popup.style.display = 'flex';
                 this.elements.popup.classList.add('show');
             }
 
